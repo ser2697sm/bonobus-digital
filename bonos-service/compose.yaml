@@ -1,0 +1,26 @@
+# Infraestructura local del servicio de bonos.
+# Arrancar:  docker compose up -d
+# Parar:     docker compose stop   (conserva los datos)
+# Borrar:    docker compose down -v (elimina también los datos)
+
+services:
+
+  postgres:
+    image: postgres:18
+    container_name: bonos-postgres
+    ports:
+      - "5432:5432"            # puerto de tu máquina : puerto del contenedor
+    environment:
+      POSTGRES_DB: bonos        # base de datos que se crea al arrancar por primera vez
+      POSTGRES_USER: bonos
+      POSTGRES_PASSWORD: bonos  # solo para desarrollo local
+    volumes:
+      - postgres-data:/var/lib/postgresql   # los datos sobreviven aunque borres el contenedor
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bonos -d bonos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:

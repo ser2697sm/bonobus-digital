@@ -1,0 +1,42 @@
+### Pruebas de la API (IntelliJ: pulsa el ▶ verde junto a cada petición)
+### Copia el "codigo" que te devuelve la creación y pégalo en la variable de abajo
+@codigo = LOR-XXXXXXXX
+
+### 1. Crear un bono (nace con 0 viajes)
+POST http://localhost:8080/api/bonos
+Content-Type: application/json
+
+{
+  "titular": "Sergio"
+}
+
+### 2. Consultar el bono
+GET http://localhost:8080/api/bonos/{{codigo}}
+
+### 3. Intentar viajar con 0 viajes -> 409
+POST http://localhost:8080/api/bonos/{{codigo}}/viajes
+
+### 4. Recargar 8 viajes
+POST http://localhost:8080/api/bonos/{{codigo}}/recargas
+Content-Type: application/json
+
+{
+  "viajes": 8
+}
+
+### 5. Registrar un viaje (repítelo hasta agotar el bono y mira las alertas en la consola)
+POST http://localhost:8080/api/bonos/{{codigo}}/viajes
+
+### 6. Historial
+GET http://localhost:8080/api/bonos/{{codigo}}/movimientos?page=0&size=20
+
+### 7. Recarga no válida -> 400 con detalle de validación
+POST http://localhost:8080/api/bonos/{{codigo}}/recargas
+Content-Type: application/json
+
+{
+  "viajes": 0
+}
+
+### 8. Bono inexistente -> 404
+GET http://localhost:8080/api/bonos/LOR-NOEXISTE

@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: bonos-service
+
+  # --- Conexión a PostgreSQL (el contenedor de compose.yaml) ---
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bonos
+    username: bonos
+    password: bonos
+
+  # --- JPA / Hibernate ---
+  jpa:
+    hibernate:
+      # update: Hibernate crea o modifica las tablas a partir de tus entidades.
+      # Cómodo para empezar; más adelante lo cambiaremos por scripts SQL versionados (Flyway).
+      ddl-auto: validate
+    # Muestra en consola el SQL que genera Hibernate, para que veas qué hace por debajo
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
